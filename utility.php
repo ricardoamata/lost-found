@@ -56,4 +56,40 @@ function obtenerUsuario($columna, $valor) {
 	return $result->fetch_assoc();
 }
 
+function test_input($data) {
+  $data = trim($data);
+  $data = stripslashes($data);
+  $data = htmlspecialchars($data);
+  return $data;
+}
+
+function validarNombre($nombre){
+	$valido = TRUE; 
+	if (!preg_match("/^[a-zA-Z ]*$/",$nombre)) {
+  		$valido = FALSE;
+	}
+	return $valido;
+}
+
+function validarCorreo($correo){
+	$valido = TRUE;
+	if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
+  		$valido = FALSE;
+	}
+	return $valido;	
+}
+
+function getRows($table, $column, $value) {
+	$conn = new mysqli($GLOBALS['servername'], $GLOBALS['username'], "", $GLOBALS['dbname']);
+
+	if ($conn->connect_error) {
+	    die("Connection failed: " . $conn->connect_error);
+	}
+
+	$result = $conn->query("SELECT * FROM ".$table." WHERE ".$column."='".$value."'");
+	$conn->close();
+
+	return $result;
+}
+
 ?>
